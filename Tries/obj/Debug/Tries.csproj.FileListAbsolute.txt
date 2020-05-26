@@ -1,0 +1,6 @@
+D:\Study Stuff\GITNew\Tries\obj\Debug\Tries.csprojAssemblyReference.cache
+D:\Study Stuff\GITNew\Tries\bin\Debug\Tries.exe.config
+D:\Study Stuff\GITNew\Tries\bin\Debug\Tries.exe
+D:\Study Stuff\GITNew\Tries\bin\Debug\Tries.pdb
+D:\Study Stuff\GITNew\Tries\obj\Debug\Tries.exe
+D:\Study Stuff\GITNew\Tries\obj\Debug\Tries.pdb

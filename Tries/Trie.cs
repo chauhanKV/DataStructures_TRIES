@@ -100,6 +100,7 @@ namespace Tries
             insertWithRecursion(root.getChild(ch), array, ++counter);
         }
 
+        // O(WordLength)
         public bool contains(string word)
         {
             if (string.IsNullOrEmpty(word))
@@ -196,40 +197,107 @@ namespace Tries
            
         }
 
-        public void autoComplete(string word)
+        public void findWords(string prefix)
         {
             List<string> words = new List<string>();
-            word = word.ToLower();
-           autoComplete(root, word, words, 0);
+            var lastNode = findLastNodeOf(prefix);
+            findWords(lastNode, prefix, words);
+
+            foreach (string word in words)
+                Console.WriteLine(word);
         }
 
-        private void autoComplete(Node root, string word, List<string> words, int index)
+        // O(WordLength)
+        private Node findLastNodeOf(string prefix)
         {
-            Console.WriteLine(root.Value);
-
-            if (root.Value != ' ')
-                word += root.Value;
-
-            if (root.IsEndOfWord)
-                words.Add(word);
-
-            var wordArray = word.ToCharArray();
-
-            if (index < wordArray.Length)
+            if (prefix == null)
+                return null;
+            var current = root;
+            foreach (var ch in prefix.ToCharArray())
             {
-                var child = root.getChild(wordArray[index]);
-
+                var child = current.getChild(ch);
                 if (child == null)
-                    return;
-
-                autoComplete(child, word, words, index + 1);
+                    return null;
+                current = child;
             }
-
-            if (index == wordArray.Length)
-            {
-                foreach (var child in root.getChildren())
-                    autoComplete(child, "", words, index);
-            }
+            return current;
         }
+
+        // O(n)
+        private void findWords(Node node, string prefix, List<string> words)
+        {
+            if (node == null)
+                return;
+
+            if (node.IsEndOfWord)
+                words.Add(prefix);
+
+            foreach (var child in node.getChildren())
+                findWords(child, prefix + child.Value, words);
+        }
+
+        public int getCountOfWordsInTrie()
+        {
+            return countOfWordsInTrie(root);  
+        }
+
+        // O(n)
+        private int countOfWordsInTrie(Node node)
+        {
+            int wordCount = 0;
+
+            if (node.IsEndOfWord)
+                ++wordCount;
+
+            foreach (var child in node.getChildren())
+            {
+                wordCount += countOfWordsInTrie(child);
+            }
+
+            return wordCount;
+        }
+
+        // O(shortword Length)
+        public string longCommonPrefix(string[] words)
+        {
+            if (words == null || words.Length == 0)
+                return "";
+
+            var trie = new Trie();
+            foreach (var word in words)
+                trie.insert(word);
+
+            var shortestWord = getShortestWord(words);
+            var prefix = new StringBuilder();
+
+            var current = trie.root;
+            while (prefix.Length < shortestWord.Length)
+            {
+                var children = current.getChildren();
+                if (children.Length != 1)
+                    break;
+
+                current = children[0];
+                prefix.Append(current.Value);
+            }
+
+            return prefix.ToString();
+        }
+
+        // O(words length)
+        private string getShortestWord(string[] words)
+        {
+            var shortestWord = words[0];
+
+            for(int i = 0; i < words.Length; i++)
+            {
+                if (shortestWord.Length > words[i].Length)
+                    shortestWord = words[i];
+            }
+            return shortestWord;
+        }
+
+
+
     }
 }

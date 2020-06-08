@@ -22,9 +22,10 @@ namespace Tries
             trie.insert("car");
             trie.insert("carefull");
             trie.insert("card");
+            trie.insert("egg");
             //trie.insertWithRecursion("CANADA");
 
-            Console.WriteLine("Does trie contains word 'CAN' ?" +  trie.contains("CAN"));
+            Console.WriteLine("Does trie contains word 'CAN' ?" + trie.contains("CAN"));
 
             trie.delete("CAN");
 
@@ -32,7 +33,11 @@ namespace Tries
             Console.WriteLine("Does trie contains word 'CAN' ?" + trie.contains("CAN"));
 
             Console.WriteLine("----------- AutoComplete ---------------");
-            trie.autoComplete("car");
+            trie.findWords("");
+            Console.WriteLine("Word count in Trie is : " + trie.getCountOfWordsInTrie());
+
+            var commonPrefix = trie.longCommonPrefix(new string[4] { "car", "care", "carefull", "cargo"});
+            Console.WriteLine("Most common prefix is : " + commonPrefix);
 
             Console.ReadLine();
         }
